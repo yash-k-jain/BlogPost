@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("secret_key")
 
 # bootstrap
-bootstrap = Bootstrap5(app)
+Bootstrap5(app)
 
 # ckeditor
 ckeditor = CKEditor(app)
