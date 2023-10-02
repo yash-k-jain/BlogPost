@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %} BlogPost | Blog {% endblock %}
+
+{% from "Bootstrap5/form.html" import render_form %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="heading h1">Blogs</h1> <hr class="border border-primary border-3 opacity-75">
+    <div class="container">
+        <div class="container text-center">
+            <h1 class="h1">{{ blog.title }}</h1>
+            <h2 class="h2">{{ blog.subtitle }}</h2>
+        </div>
+        <p>Posted by <span>{{ blog.author.name }}</span> on <span>{{ blog.date }}</span></p>
+        <p class="text-center">{{ blog.body | safe }}</p>
+    </div>
+    <hr class="border border-danger border-2 opacity-50">
+</div>
+
+<div class="container">
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='comment_text') }}
+    {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+    <div class="container mt-3">
+        <h3>Some Comments</h3>
+        <hr>
+        {% if blog.comments == []: %}
+            <p>Not any Comment yet.</p>
+        {% else %}
+            {% for comment in blog.comments: %}
+                <p>Comment By :- <img src="{{ comment.comment_author.email | gravatar }}"> {{ comment.comment_author.name }}</p>
+                <p> {{ comment.body | safe }}</p>
+                <hr class="border border-primary border-3 opacity-75">
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

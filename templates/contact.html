@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% from "Bootstrap5/form.html" import render_form %}
+
+{% block title %} BlogPost | Contact {% endblock %}
+
+{% block styling %} {{ bootstrap.load_css() }} {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Contact Me</h1>
+    <hr class="border border-primary border-3 opacity-75">
+    {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  </head>
+  <body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ url_for('home') }}" class="nav-link px-2 text-secondary">Home</a></li>
+                    <li><a href="{{ url_for('show_all_blogs') }}" class="nav-link px-2 text-white">Blogs</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('domain', existing_user=True) }}" class="nav-link px-2 text-white">MyDomain</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('show_user') }}" class="nav-link px-2 text-white">Users</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="nav-link px-2 text-white">ContactMe</a></li>
+                </ul>
+
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+                </form>
+              {% if not current_user.is_authenticated %}
+                <div class="text-end">
+                    <a href="{{ url_for('login') }}"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                    <a href="{{ url_for('register') }}"><button type="button" class="btn btn-warning">Register</button></a>
+                </div>
+              {% else %}
+                <div class="text-end">
+                    <a href="{{ url_for('logout') }}"><button type="button" class="btn btn-outline-success me-2">Logout</button></a>
+                    <span><button type="button" class="btn btn-outline-success me-2">{{ current_user.name }}</button></span>
+                </div>
+              {% endif %}
+            </div>
+        </div>
+    </header>
+  </body>
+</html>

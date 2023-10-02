@@ -1,0 +1,16 @@
+*{
+    color: white;
+}
+body{
+    background-image: url("/static/images/home-bg2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.feature-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem
+}
+span{
+    color: #34dbeb;
+}

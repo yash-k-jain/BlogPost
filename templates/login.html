@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% from "Bootstrap5/form.html" import render_form %}
+
+{% block title %} BlogPost | Login {% endblock %}
+
+{% block styling %} {{ bootstrap.load_css() }} {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Welcome Back</h1>
+    <hr class="border border-primary border-3 opacity-75">
+    {% with messages = get_flashed_messages() %}
+        {% if messages: %}
+            {% for message in messages: %}
+                <p style="color: red; font-weight: 900">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+</div>
+{% endblock %}

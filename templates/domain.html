@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} BlogPost | Domain {% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1>You Successfully get entered.</h1>
+    {% if existing_user == "True": %}
+        <p>Now click on <br><a href="{{ url_for('show_all_user_blogs', name=current_user.name) }}"><button type="button" class="btn btn-dark">Enter My Domain</button></a><br> to enter your own domain and start making blogs.</p>
+    {% else: %}
+        <p>Now click on <br><a href="{{ url_for('show_all_user_blogs', name=current_user.name) }}"><button type="button" class="btn btn-dark">Create My Domain</button></a><br> to create your own domain and start making blogs.</p>
+    {% endif %}
+</div>
+{% endblock %}

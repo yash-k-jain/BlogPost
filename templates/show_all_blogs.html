@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} BlogPost | Blogs {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="heading h1">Blogs</h1> <hr class="border border-primary border-3 opacity-75">
+    <div class="container">
+        {% if blogs == [] %}
+            <p>No one posted any blogs yet. Be the one to Post.</p>
+        {% else %}
+            {% for blog in blogs: %}
+                <h1 class="h1">{{ blog.title }}</h1>
+                <h2 class="h2">{{ blog.subtitle }}</h2>
+                <p>Posted by <span>{{ blog.author.name }}</span> on <span>{{ blog.date }}</span></p>
+                <a href="{{ url_for('show_blog', blog_id=blog.id) }}"><button type="button" class="btn btn-outline-primary">View Full Blog</button></a>
+                <hr class="border border-danger border-2 opacity-50">
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
