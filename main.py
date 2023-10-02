@@ -4,7 +4,7 @@ from smtplib import SMTP
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("secret_key")
 
 # bootstrap
-bootstrap = Bootstrap(app)
+bootstrap = Bootstrap5(app)
 
 # ckeditor
 ckeditor = CKEditor(app)
