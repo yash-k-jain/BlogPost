@@ -43,3 +43,8 @@ class ContactForm(FlaskForm):
     subject = StringField(label="Email Subject", validators=[DataRequired()])
     message = StringField(label="Email Message", validators=[DataRequired()])
     button = SubmitField(label="Send My Message")
+
+
+class AdminCheck(FlaskForm):
+    admin_key = PasswordField(label="Enter Admin's Special Key", validators=[DataRequired()])
+    button = SubmitField(label="Go")
