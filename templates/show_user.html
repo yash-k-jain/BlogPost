@@ -11,6 +11,9 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Posts</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -18,6 +21,9 @@
                 <tr class=" table-striped">
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
+                    <td><a href="{{ url_for('get_user_data', user_id=user.id) }}"><button type="button" class="btn btn-outline-primary">Data</button></a></td>
+                    <td><a href="{{ url_for('get_user_posts', user_id=user.id) }}"><button type="button" class="btn btn-outline-primary">Posts</button></a></td>
+                    <td><a href="{{ url_for('delete_user_and_post', user_id=user.id) }}"><button type="button" class="btn btn-outline-primary">Delete</button></a></td>
                 </tr>
             {% endfor %}
             </tbody>
