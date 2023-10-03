@@ -1,7 +1,7 @@
 import os
 from datetime import date
 from smtplib import SMTP
-from flask import Flask, render_template, redirect, url_for, flash, abort, request
+from flask import Flask, render_template, redirect, url_for, flash, abort, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from flask_bootstrap import Bootstrap5
@@ -11,7 +11,7 @@ from flask_login import UserMixin, login_user, LoginManager, current_user, logou
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from sqlalchemy.orm import relationship
-from form import RegisterForm, LoginForm, AddForm, EditForm, CommentForm, ContactForm
+from form import RegisterForm, LoginForm, AddForm, EditForm, CommentForm, ContactForm, AdminCheck
 
 MY_EMAIL = os.getenv("my_email")
 MY_PASSWORD = os.getenv("my_password")
@@ -61,6 +61,16 @@ def login_required(f):
     return decorated_function
 
 
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.id == 1:
+            return abort(403)
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +87,20 @@ class User(UserMixin, db.Model):
     # Parent relationship: "comment_author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
 
+    def to_dict(self):
+        # # Method 1.
+        # dictionary = {}
+        # # Loop through each column in the data record
+        # for column in self.__table__.columns:
+        #     # Create a new dictionary entry;
+        #     # where the key is the name of the column
+        #     # and the value is the value of the column
+        #     dictionary[column.name] = getattr(self, column.name)
+        # return dictionary
+
+        # Method 2. Altenatively use Dictionary Comprehension to do the same thing.
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 
 class BlogPost(db.Model):
     __tablename__ = "blogpost"
@@ -91,6 +115,9 @@ class BlogPost(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Create reference to the User object. The "posts" refers to the posts property in the User class.
     author = relationship("User", back_populates="posts")
+
+    def to_dict(self):
+        return {column.name : getattr(self, column.name) for column in self.__table__.columns}
 
 
     # Parent relationship to the comments
@@ -268,6 +295,7 @@ def delete():
 
 
 @app.route("/user")
+@admin_only
 @login_required
 def show_user():
     if current_user.id == 1:
@@ -307,6 +335,61 @@ def contact():
             )
         return redirect(url_for("home"))
     return render_template("contact.html", form=form)
+
+
+@app.route("/user/data", methods=["GET","POST"])
+@login_required
+@admin_only
+def get_user_data():
+    id = request.args.get("user_id")
+    form = AdminCheck()
+    if form.validate_on_submit():
+        if form.admin_key.data == "AdminArea":
+            result = db.session.execute(db.select(User).where(User.id == id))
+            all_user = result.scalars().all()
+            # print(all_cafes)
+            # all_cafe_dictionary = {}
+            # cafe_dictionary_list = []
+            # for i in range(len(all_cafes)):
+            #     cafe_dictionary = all_cafes[i].to_dict()
+            #     cafe_dictionary_list.append(cafe_dictionary)
+            #     all_cafe_dictionary["Cafe"] = cafe_dictionary_list
+            return jsonify(users=[user.to_dict() for user in all_user])
+        else:
+            return abort(403)
+    return render_template("show_user_datas.html", form=form)
+
+
+@app.route("/user/posts", methods=["GET","POST"])
+def get_user_posts():
+    id = request.args.get("user_id")
+    form = AdminCheck()
+    if form.validate_on_submit():
+        if form.admin_key.data == "AdminArea":
+            result = db.session.execute(db.select(BlogPost).where(BlogPost.author_id == id))
+            all_posts = result.scalars().all()
+            if all_posts:
+                return jsonify(posts=[post.to_dict() for post in all_posts])
+            else:
+                return jsonify(error={"Not Found": "No any post yet."})
+        else:
+            return abort(403)
+    return render_template("show_user_datas.html", form=form)
+
+
+@app.route("/delete/user and post", methods=["GET","POST"])
+def delete_user_and_post():
+    id = request.args.get("user_id")
+    form = AdminCheck()
+    if form.validate_on_submit():
+        if form.admin_key.data == "AdminArea":
+            result = db.get_or_404(User, id)
+            db.session.delete(result)
+            db.session.commit()
+            return jsonify(result={"success": "Successfully Deleted."})
+        else:
+            return abort(403)
+    return render_template("show_user_datas.html", form=form)
 
 
 if __name__ == "__main__":
