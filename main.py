@@ -306,12 +306,9 @@ def delete():
 @admin_only
 @login_required
 def show_user():
-    if current_user.id == 1:
-        result = db.session.execute(db.select(User).order_by(User.name))
-        list_of_users = result.scalars().all()
-        return render_template("show_user.html", users=list_of_users)
-    else:
-        return abort(403)
+      result = db.session.execute(db.select(User).order_by(User.name))
+      list_of_users = result.scalars().all()
+      return render_template("show_user.html", users=list_of_users)
 
 
 # @app.route("/delete_user")
