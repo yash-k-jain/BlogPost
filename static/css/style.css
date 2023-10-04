@@ -14,3 +14,7 @@ body{
 span{
     color: #34dbeb;
 }
+marquee{
+    color:black;
+    font-weight: 600;
+}
