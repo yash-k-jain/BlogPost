@@ -21,14 +21,14 @@ class AddForm(FlaskForm):
     title = StringField(label="Blog Title", validators=[DataRequired()])
     subtitle = StringField(label="Blog Subtitle", validators=[DataRequired()])
     author = StringField(label="Blog Author", validators=[DataRequired()])
-    body = CKEditorField(label="Blog Body", validators=[DataRequired()])
+    body = CKEditorField(label="Blog Content", validators=[DataRequired()])
     button = SubmitField(label="Add My Blog")
 
 
 class EditForm(FlaskForm):
     title = StringField(label="Blog New Title", validators=[DataRequired()])
     subtitle = StringField(label="Blog New Subtitle", validators=[DataRequired()])
-    body = CKEditorField(label="Blog New Body", validators=[DataRequired()])
+    body = CKEditorField(label="Blog New Content", validators=[DataRequired()])
     button = SubmitField(label="Add My Edited Blog")
 
 
@@ -43,6 +43,11 @@ class ContactForm(FlaskForm):
     subject = StringField(label="Email Subject", validators=[DataRequired()])
     message = StringField(label="Email Message", validators=[DataRequired()])
     button = SubmitField(label="Send My Message")
+
+
+class DeleteConfirm(FlaskForm):
+    user_decision = StringField(label="Are you sur e you want to delete this post. (Yes/NO)")
+    button = SubmitField(label="Confirm by decision.")
 
 
 class AdminCheck(FlaskForm):
