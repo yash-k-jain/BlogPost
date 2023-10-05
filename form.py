@@ -46,7 +46,7 @@ class ContactForm(FlaskForm):
 
 
 class DeleteConfirm(FlaskForm):
-    button = SubmitField(label="Confirm by decision.")
+    button = SubmitField(label="Confirm my decision.")
 
 
 class AdminCheck(FlaskForm):
