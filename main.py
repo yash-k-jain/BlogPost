@@ -289,16 +289,11 @@ def edit_blog():
 def delete():
     form = DeleteConfirm()
     if form.validate_on_submit():
-        if form.user_decision.data.title() == "Yes":
-            id = request.args.get("blog_id")
-            required_post = db.get_or_404(BlogPost, id)
-            db.session.delete(required_post)
-            db.session.commit()
-            return redirect(url_for("show_all_user_blogs", name=current_user.name))
-        elif form.user_decision.data.title() == "No":
-            return redirect(url_for("show_all_user_blogs", name=current_user.name))
-        else:
-            return abort(403)
+          id = request.args.get("blog_id")
+          required_post = db.get_or_404(BlogPost, id)
+          db.session.delete(required_post)
+          db.session.commit()
+          return redirect(url_for("show_all_user_blogs", name=current_user.name))
     return render_template("confirm_delete.html", form=form)
 
 
