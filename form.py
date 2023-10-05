@@ -46,7 +46,6 @@ class ContactForm(FlaskForm):
 
 
 class DeleteConfirm(FlaskForm):
-    user_decision = StringField(label="Are you sur e you want to delete this post. (Yes/NO)")
     button = SubmitField(label="Confirm by decision.")
 
 
