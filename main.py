@@ -288,8 +288,8 @@ def edit_blog():
 @app.route("/delete", methods=["GET","POST"])
 def delete():
     form = DeleteConfirm()
+    id = request.args.get("blog_id")
     if form.validate_on_submit():
-      id = request.args.get("blog_id")
       required_post = db.get_or_404(BlogPost, id)
       db.session.delete(required_post)
       db.session.commit()
